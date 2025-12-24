@@ -80,12 +80,19 @@ class ShoonyaApiClient {
       'jKey': '',
     };
 
-    print('Requesting Login for $userId...');
+    debugPrint('--- QuickAuth Request (ID: $instanceId) ---');
+    debugPrint('URL: ${baseUrl}QuickAuth');
+    debugPrint('Body: jData=${payload['jData']}&jKey=');
+
     final response = await http.post(
       Uri.parse('${baseUrl}QuickAuth'),
       body: 'jData=${payload['jData']}&jKey=',
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     );
+    
+    debugPrint('--- QuickAuth Response (ID: $instanceId) ---');
+    debugPrint('Status: ${response.statusCode}');
+    debugPrint('Response: ${response.body}');
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -93,8 +100,8 @@ class ShoonyaApiClient {
         final newToken = data['usertoken'] ?? data['susertoken'];
         _sessionToken = newToken;
         _userId = userId;
-        debugPrint('--- Login Success ---');
-        debugPrint('New Token: $newToken');
+        debugPrint('--- Login Success (ID: $instanceId) ---');
+        debugPrint('Token: $newToken');
         return data;
       } else {
         print('Login Failed: ${data['emsg']}');
@@ -117,7 +124,7 @@ class ShoonyaApiClient {
       if (exchange != null) 'exch': exchange,
     });
 
-    final url = '${baseUrl}SearchScrip/';
+    final url = '${baseUrl}SearchScrip';
     final body = 'jData=$jData&jKey=$_sessionToken';
     debugPrint('--- SearchScrip Request (ID: $instanceId) ---');
     debugPrint('URL: $url');

@@ -10,6 +10,7 @@ class ShoonyaApiClient {
   static const String baseUrl = 'https://api.shoonya.com/NorenWClientTP/';
   static const String socketUrl = 'wss://api.shoonya.com/NorenWSTP/';
   
+  final String instanceId = DateTime.now().millisecondsSinceEpoch.toString().substring(10);
   String? _sessionToken;
   String? _userId;
   WebSocketChannel? _channel;
@@ -110,24 +111,15 @@ class ShoonyaApiClient {
   }) async {
     if (_sessionToken == null) throw Exception('Not authenticated');
 
-    final payload = {
-      'jData': jsonEncode({
-        'uid': _userId,
-        'stext': searchText,
-        if (exchange != null) 'exch': exchange,
-      }),
-      'jKey': _sessionToken,
-    };
-
     final jData = jsonEncode({
       'uid': _userId,
-      'stext': searchText.replaceAll(' ', '%20'),
+      'stext': searchText.toUpperCase().replaceAll(' ', '%20'),
       if (exchange != null) 'exch': exchange,
     });
 
     final url = '${baseUrl}SearchScrip/';
     final body = 'jData=$jData&jKey=$_sessionToken';
-    debugPrint('--- SearchScrip Request ---');
+    debugPrint('--- SearchScrip Request (ID: $instanceId) ---');
     debugPrint('URL: $url');
     debugPrint('Body: $body');
 

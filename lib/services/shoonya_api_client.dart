@@ -80,9 +80,11 @@ class ShoonyaApiClient {
       'jKey': '',
     };
 
+    debugPrint('#########################################');
     debugPrint('--- QuickAuth Request (ID: $instanceId) ---');
     debugPrint('URL: ${baseUrl}QuickAuth');
     debugPrint('Body: jData=${payload['jData']}&jKey=');
+    debugPrint('#########################################');
 
     final response = await http.post(
       Uri.parse('${baseUrl}QuickAuth'),
@@ -90,9 +92,11 @@ class ShoonyaApiClient {
       headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     );
     
+    debugPrint('#########################################');
     debugPrint('--- QuickAuth Response (ID: $instanceId) ---');
     debugPrint('Status: ${response.statusCode}');
     debugPrint('Response: ${response.body}');
+    debugPrint('#########################################');
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
@@ -100,8 +104,7 @@ class ShoonyaApiClient {
         final newToken = data['usertoken'] ?? data['susertoken'];
         _sessionToken = newToken;
         _userId = userId;
-        debugPrint('--- Login Success (ID: $instanceId) ---');
-        debugPrint('Token: $newToken');
+        debugPrint('>>> SUCCESS: Session Token set to $newToken');
         return data;
       } else {
         print('Login Failed: ${data['emsg']}');

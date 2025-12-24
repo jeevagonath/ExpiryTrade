@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "797615069694",
+    "project_id": "heroorzero-a2330",
+    "storage_bucket": "heroorzero-a2330.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:797615069694:android:6d31fee8afcc8a2592c8af",
+        "android_client_info": {
+          "package_name": "com.android.expiry_trade"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA6e3aAWscfVNb8KnFJ_8QDWw3DIDPZPFA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

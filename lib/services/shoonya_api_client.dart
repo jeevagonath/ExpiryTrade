@@ -119,8 +119,10 @@ class ShoonyaApiClient {
 
     final response = await http.post(
       Uri.parse('${baseUrl}SearchScrip'),
-      body: 'jData=${payload['jData']}&jKey=${payload['jKey']}',
-      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
+      body: {
+        'jData': payload['jData']!.toString(),
+        'jKey': payload['jKey']!.toString(),
+      },
     );
 
     if (response.statusCode == 200) {

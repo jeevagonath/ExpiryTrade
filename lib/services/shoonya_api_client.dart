@@ -119,6 +119,7 @@ class ShoonyaApiClient {
     required String searchText,
     String? exchange,
   }) async {
+    debugPrint('searchScrip called with: searchText=$searchText, exchange=$exchange');
     if (_sessionToken == null) throw Exception('Not authenticated');
 
     final jData = jsonEncode({
@@ -129,9 +130,11 @@ class ShoonyaApiClient {
 
     final url = '${baseUrl}SearchScrip';
     final body = 'jData=$jData&jKey=$_sessionToken';
+    debugPrint('#########################################');
     debugPrint('--- SearchScrip Request (ID: $instanceId) ---');
     debugPrint('URL: $url');
     debugPrint('Body: $body');
+    debugPrint('#########################################');
 
     final response = await http.post(
       Uri.parse(url),

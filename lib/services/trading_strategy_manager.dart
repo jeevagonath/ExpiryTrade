@@ -152,6 +152,20 @@ class TradingStrategyManager {
     }
   }
 
+  void runManualTest() {
+    final now = DateTime.now();
+    final weekday = now.weekday;
+    
+    // Default to NIFTY on Tuesday, SENSEX otherwise
+    if (weekday == 2) {
+      debugPrint('Manual Test: Triggering NIFTY Protocol');
+      runStrategy('NIFTY', 'NSE', '26000');
+    } else {
+      debugPrint('Manual Test: Triggering SENSEX Protocol');
+      runStrategy('SENSEX', 'BSE', '1');
+    }
+  }
+
   Future<void> runStrategy(String indexName, String exchange, String token) async {
     _state['status'] = 'Running for $indexName...';
     _state['error'] = null;
@@ -178,7 +192,14 @@ class TradingStrategyManager {
       final optExch = (exchange == 'NSE' ? 'NFO' : 'BFO');
       
       Future<dynamic> fetchContract(int strike, String type) async {
-        final searchQuery = '$indexName $strike $type';
+        final queryIndex = indexName.toUpperCase().trim();
+        if (queryIndex.isEmpty) throw Exception('Index name is empty');
+        
+        final searchQuery = '$queryIndex $strike $type';
+        debugPrint('--- Strategy Search Trace ---');
+        debugPrint('Index: $queryIndex, Strike: $strike, Type: $type');
+        debugPrint('Final Query: "$searchQuery"');
+        
         final searchResult = await apiClient.searchScrip(searchText: searchQuery, exchange: optExch);
         
         if (searchResult['stat'] == 'Ok' && searchResult['values'] != null && searchResult['values'].isNotEmpty) {

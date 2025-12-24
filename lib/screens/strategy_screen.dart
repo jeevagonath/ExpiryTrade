@@ -481,7 +481,7 @@ class _StrategyScreenState extends ConsumerState<StrategyScreen> {
                 children: [
                   GestureDetector(
                     onTap: () {
-                      ref.read(tradingStrategyProvider).runStrategy('NIFTY', 'NSE', '26000');
+                      ref.read(tradingStrategyProvider).runManualTest();
                     },
                     child: Container(
                       padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),

@@ -89,9 +89,11 @@ class ShoonyaApiClient {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       if (data['stat'] == 'Ok') {
-        _sessionToken = data['susertoken'];
+        final newToken = data['susertoken'];
+        _sessionToken = newToken;
         _userId = userId;
-        print('Login Successful');
+        debugPrint('--- Login Success ---');
+        debugPrint('New Token: $newToken');
         return data;
       } else {
         print('Login Failed: ${data['emsg']}');
@@ -309,6 +311,9 @@ class ShoonyaApiClient {
   String? get userId => _userId;
 
   void setSession(String userId, String token) {
+    debugPrint('--- Session Restored/Set ---');
+    debugPrint('User: $userId');
+    debugPrint('Token: $token');
     _userId = userId;
     _sessionToken = token;
   }
@@ -321,7 +326,9 @@ class ShoonyaApiClient {
     _reconnectTimer?.cancel();
 
     try {
-      print('Connecting to WebSocket...');
+      debugPrint('--- WebSocket Connection Details ---');
+      debugPrint('URL: $socketUrl');
+      
       _channel = WebSocketChannel.connect(Uri.parse(socketUrl));
       
       final connectMessage = {
@@ -332,10 +339,14 @@ class ShoonyaApiClient {
         'susertoken': _sessionToken,
       };
 
-      _channel!.sink.add(jsonEncode(connectMessage));
+      final connectJson = jsonEncode(connectMessage);
+      debugPrint('Connect Message: $connectJson');
+
+      _channel!.sink.add(connectJson);
 
       _channel!.stream.listen(
         (message) {
+          debugPrint('WebSocket Received: $message');
           final data = jsonDecode(message);
           _socketStreamController.add(data);
           

@@ -117,13 +117,27 @@ class ShoonyaApiClient {
       'jKey': _sessionToken,
     };
 
+    final jData = jsonEncode({
+      'uid': _userId,
+      'stext': searchText.replaceAll(' ', '%20'),
+      if (exchange != null) 'exch': exchange,
+    });
+
+    final url = '${baseUrl}SearchScrip/';
+    final body = 'jData=$jData&jKey=$_sessionToken';
+    debugPrint('--- SearchScrip Request ---');
+    debugPrint('URL: $url');
+    debugPrint('Body: $body');
+
     final response = await http.post(
-      Uri.parse('${baseUrl}SearchScrip'),
-      body: {
-        'jData': payload['jData']!.toString(),
-        'jKey': payload['jKey']!.toString(),
-      },
+      Uri.parse(url),
+      body: body,
+      headers: {'Content-Type': 'application/x-www-form-urlencoded'},
     );
+
+    debugPrint('--- SearchScrip Response ---');
+    debugPrint('Status: ${response.statusCode}');
+    debugPrint('Response: ${response.body}');
 
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);

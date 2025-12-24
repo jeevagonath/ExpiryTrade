@@ -89,7 +89,7 @@ class ShoonyaApiClient {
     if (response.statusCode == 200) {
       final data = jsonDecode(response.body);
       if (data['stat'] == 'Ok') {
-        final newToken = data['susertoken'];
+        final newToken = data['usertoken'] ?? data['susertoken'];
         _sessionToken = newToken;
         _userId = userId;
         debugPrint('--- Login Success ---');
